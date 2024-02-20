@@ -1,0 +1,9 @@
+# Builds
+/target
+
+# IDE files
+.idea
+.vscode
+
+# Mac files
+.DS_Store
