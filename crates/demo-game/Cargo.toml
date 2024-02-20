@@ -1,0 +1,28 @@
+[package]
+name = "demo-game"
+version = "0.0.0"
+homepage = "https://github.com/saikou-studios/demo-game"
+description = "A demo game built in rust using the Bevy game engine"
+autobins = false
+exclude = ["build"]
+rust-version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "demo-game"
+path = "src/bin/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy.workspace = true
+winit.workspace = true
+image.workspace = true
+
+# workspace dependencies
+demo-framework = { path = "../demo-framework" }
+
+[build-dependencies]
+embed-resource = "2.4.1"

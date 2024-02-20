@@ -1,14 +1,13 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+use bevy::prelude::States;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub mod debug;
+pub mod loading;
+pub mod menu;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+#[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
+pub enum GameState {
+    #[default]
+    Loading,
+    Playing,
+    Menu,
 }
