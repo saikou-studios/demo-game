@@ -34,13 +34,11 @@ pub const fn version() -> VersionInfo {
         option_env!("RA_COMMIT_HASH"),
         option_env!("RA_COMMIT_DATE"),
     ) {
-        (Some(short_hash), Some(hash), Some(date)) => {
-            Some(CommitInfo {
-                hash,
-                short_hash,
-                date,
-            })
-        },
+        (Some(short_hash), Some(hash), Some(date)) => Some(CommitInfo {
+            hash,
+            short_hash,
+            date,
+        }),
         _ => None,
     };
 

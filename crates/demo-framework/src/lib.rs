@@ -3,6 +3,8 @@ use bevy::prelude::States;
 pub mod debug;
 pub mod loading;
 pub mod menu;
+pub mod player;
+pub mod ui;
 
 #[derive(States, Default, Clone, Eq, PartialEq, Debug, Hash)]
 pub enum GameState {
