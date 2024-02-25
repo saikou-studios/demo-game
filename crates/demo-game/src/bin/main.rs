@@ -12,6 +12,8 @@ use std::io::Cursor;
 use winit::window::Icon;
 
 fn main() {
+    dotenvy::dotenv().expect("Failed to load .env file");
+
     App::new()
         .insert_resource(Msaa::Off)
         .insert_resource(AssetMetaCheck::Never)
@@ -26,6 +28,7 @@ fn main() {
                     ..Default::default()
                 })
                 .set(AssetPlugin {
+                    watch_for_changes_override: Some(true),
                     file_path: "../../assets".to_string(),
                     ..Default::default()
                 }),

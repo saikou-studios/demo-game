@@ -1,0 +1,21 @@
+[package]
+name = "discord"
+version = "0.1.0"
+rust-version.workspace = true
+edition.workspace = true
+license-file.workspace = true
+authors.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = { workspace = true, default-features = false }
+discord-presence = { git = "https://github.com/jewlexx/discord-presence.git", version = "1.0.1" }
+discord-rich-presence = "0.2.3"
+quork = { version = "0.6", default-features = false, features = ["traits"] }
+derive_more = { version = "0.99" }
+parking_lot = "0.12.1"
+anyhow = "1.0.80"
+
+[patch.crates-io]
+discord-presence = { git = "https://github.com/jewlexx/discord-presence.git", version = "1.0.1" }
