@@ -4,7 +4,7 @@ use bevy::{
     prelude::{in_state, IntoSystemConfigs, OnEnter},
 };
 
-mod diagnostics;
+pub(crate) mod diagnostics;
 
 pub struct UiPlugin;
 

@@ -18,8 +18,11 @@ path = "src/bin/main.rs"
 
 [dependencies]
 bevy.workspace = true
+bevy_ecs_tilemap.workspace = true
+bevy_rapier2d.workspace = true
 winit.workspace = true
 image.workspace = true
+
 dotenvy = "0.15.7"
 
 # workspace dependencies
@@ -27,4 +30,4 @@ demo-framework = { path = "../demo-framework" }
 discord = { path = "../discord" }
 
 [build-dependencies]
-embed-resource = "2.4.1"
+embed-resource = "2.4.2"

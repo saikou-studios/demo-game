@@ -3,11 +3,7 @@ use bevy::{
     log::error,
     prelude::{DetectChanges, Res, ResMut, Resource},
 };
-use discord_rich_presence::{
-    activity::{Activity, Timestamps},
-    DiscordIpc, DiscordIpcClient,
-};
-use std::time::{SystemTime, UNIX_EPOCH};
+use discord_rich_presence::{activity::Activity, DiscordIpc, DiscordIpcClient};
 
 mod state;
 

@@ -1,19 +1,15 @@
-use bevy::app::{App, Plugin};
-#[cfg(debug_assertions)]
-use bevy::diagnostic::{
-    EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin,
-};
-
 pub struct DebugPlugin;
 
-impl Plugin for DebugPlugin {
-    fn build(&self, app: &mut App) {
+impl bevy::app::Plugin for DebugPlugin {
+    fn build(&self, app: &mut bevy::app::App) {
         #[cfg(debug_assertions)]
         {
             app.add_plugins((
-                FrameTimeDiagnosticsPlugin,
-                LogDiagnosticsPlugin::default(),
-                EntityCountDiagnosticsPlugin::default(),
+                bevy::diagnostic::FrameTimeDiagnosticsPlugin,
+                bevy::diagnostic::LogDiagnosticsPlugin::default(),
+                bevy::diagnostic::EntityCountDiagnosticsPlugin::default(),
+                bevy_inspector_egui::quick::WorldInspectorPlugin::new(),
+                bevy_rapier2d::render::RapierDebugRenderPlugin::default(),
             ));
         }
     }

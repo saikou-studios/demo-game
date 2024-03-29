@@ -31,8 +31,11 @@ pub struct TextureAssets {
     #[asset(image(sampler = nearest))]
     #[asset(path = "textures/npc_characters/female_2.png")]
     pub(crate) female_adventurer: Handle<Image>,
-    #[asset(path = "textures/grass_land/main.png")]
-    pub grass_land: Handle<Image>,
+
+    #[asset(image(sampler = nearest))]
+    #[asset(path = "textures/grass_land/main_autotiling.png")]
+    pub(crate) grass_land: Handle<Image>,
+
     #[asset(path = "textures/grass_land/decorative.png")]
     pub grass_land_decorative: Handle<Image>,
 }
