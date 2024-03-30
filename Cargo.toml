@@ -42,6 +42,7 @@ bevy = { version = "0.13.0", default-features = false, features = [
     "bevy_gizmos",
     "tonemapping_luts",
     "default_font",
+    "serialize",
 ] }
 bevy_ecs_tilemap = { git = "https://github.com/StarArawn/bevy_ecs_tilemap.git", branch="main", features = ["serde", "atlas"] }
 bevy_rapier2d = { version = "0.25.0", features = ["debug-render-2d"] }

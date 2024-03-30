@@ -5,12 +5,14 @@ use bevy::{
 };
 
 pub(crate) mod diagnostics;
+mod menu;
 
 pub struct UiPlugin;
 
 impl Plugin for UiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::Playing), diagnostics::setup_diagnostics)
+        app.add_plugins(menu::MenuPlugin)
+            .add_systems(OnEnter(GameState::Playing), diagnostics::setup_diagnostics)
             .add_systems(
                 Update,
                 (

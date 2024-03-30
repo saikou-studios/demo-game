@@ -5,6 +5,7 @@ use bevy::{
     math::Vec2,
     prelude::{Image, Resource},
     sprite::TextureAtlasLayout,
+    text::Font,
 };
 use bevy_asset_loader::{
     asset_collection::AssetCollection,
@@ -26,6 +27,16 @@ impl Plugin for LoadingPlugin {
 
 #[derive(AssetCollection, Resource)]
 pub struct TextureAssets {
+    // UI (main-menu)
+    #[asset(path = "textures/backgrounds/desert_mountains/background1.png")]
+    pub(crate) background_one: Handle<Image>,
+    #[asset(path = "textures/backgrounds/desert_mountains/background2.png")]
+    pub(crate) background_two: Handle<Image>,
+    #[asset(path = "textures/backgrounds/desert_mountains/background3.png")]
+    pub(crate) background_three: Handle<Image>,
+    #[asset(path = "fonts/dungeon_font.ttf")]
+    pub(crate) dungeon_font: Handle<Font>,
+
     #[asset(texture_atlas_layout(tile_size_x = 32.0, tile_size_y = 48.0, columns = 8, rows = 3))]
     pub(crate) female_adventurer_layout: Handle<TextureAtlasLayout>,
     #[asset(image(sampler = nearest))]

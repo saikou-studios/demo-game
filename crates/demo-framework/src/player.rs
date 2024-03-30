@@ -71,10 +71,10 @@ pub fn spawn_player(mut commands: Commands, my_assets: Res<TextureAssets>) {
             ..Default::default()
         },
         TextureAtlas::from(my_assets.female_adventurer_layout.clone()),
-        AnimationTimer(Timer::from_seconds(0.2, TimerMode::Repeating)),
+        AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
         KinematicCharacterController::default(),
         RigidBody::KinematicPositionBased,
-        Collider::capsule_y(13.0, 6.0),
+        Collider::capsule_y(15.0, 9.0),
         Player::default(),
         MovementState::default(),
         MovementDirection::default(),

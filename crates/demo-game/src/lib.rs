@@ -1,5 +1,5 @@
 use bevy::prelude::ResMut;
-use demo_framework::{debug, loading, menu, player, ui, world_gen, GameState};
+use demo_framework::{debug, loading, player, ui, world, GameState};
 use discord::{ActivityState, DiscordClient};
 
 pub mod version;
@@ -16,12 +16,11 @@ impl bevy::app::Plugin for GamePlugin {
         app.init_state::<GameState>()
             .add_plugins((
                 loading::LoadingPlugin,
-                menu::MenuPlugin,
-                ui::UiPlugin,
                 discord::DiscordPlugin::new(app_id, true),
+                ui::UiPlugin,
                 bevy_ecs_tilemap::TilemapPlugin,
                 bevy_rapier2d::plugin::RapierPhysicsPlugin::<bevy_rapier2d::plugin::NoUserData>::pixels_per_meter(100.0),
-                world_gen::WorldGenPlugin,
+                world::WorldPlugin,
                 player::PlayerPlugin,
             ))
             .add_systems(
