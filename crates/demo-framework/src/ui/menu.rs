@@ -70,7 +70,7 @@ fn setup_menu(mut menu_state: ResMut<NextState<MenuState>>) {
 }
 
 #[derive(Component)]
-pub struct MainMenuScreen;
+struct MainMenuScreen;
 
 fn setup_main_menu(mut commands: Commands, texture_assets: Res<TextureAssets>) {
     let btn_style = Style {
@@ -179,7 +179,7 @@ fn setup_main_menu(mut commands: Commands, texture_assets: Res<TextureAssets>) {
 }
 
 #[derive(Component)]
-pub struct MainMenuBg;
+struct MainMenuBg;
 
 fn setup_background(mut commands: Commands, texture_assets: Res<TextureAssets>) {
     commands.spawn(Camera2dBundle::default());
