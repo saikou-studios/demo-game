@@ -1,7 +1,7 @@
 use bevy::{
     input::ButtonInput,
     math::Vec2,
-    prelude::{KeyCode, Query, Res, Camera, Transform, With, Without},
+    prelude::{Camera, KeyCode, Query, Res, Transform, With, Without},
     time::Time,
 };
 use bevy_rapier2d::control::KinematicCharacterController;

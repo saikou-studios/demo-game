@@ -63,7 +63,8 @@ pub(crate) fn determine_predominant_tile_type(blocks: &[TileType; 4]) -> TileTyp
         *type_counts.entry(block_type).or_insert(0) += 1;
     }
     // Correctly find and return the TileType with the highest count
-    type_counts.into_iter()
+    type_counts
+        .into_iter()
         .max_by_key(|&(_, count)| count)
         .map(|(t, _)| t) // Directly use t without dereferencing
         .unwrap_or(TileType::Grass) // Provide a default value in case blocks is empty or another error occurs
