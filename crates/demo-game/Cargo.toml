@@ -20,6 +20,7 @@ path = "src/bin/main.rs"
 bevy.workspace = true
 bevy_ecs_tilemap.workspace = true
 bevy_rapier2d.workspace = true
+bevy_trickfilm.workspace = true
 winit.workspace = true
 image.workspace = true
 

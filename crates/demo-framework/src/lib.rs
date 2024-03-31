@@ -1,5 +1,6 @@
 use bevy::prelude::States;
 
+pub mod camera;
 pub mod debug;
 pub mod loading;
 pub mod menu;

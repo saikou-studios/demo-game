@@ -1,15 +1,26 @@
+use bevy::{
+    app::{App, Plugin, Update},
+    core_pipeline::core_2d::Camera2dBundle,
+    ecs::{
+        component::Component,
+        entity::Entity,
+        query::{Changed, With},
+        schedule::{common_conditions::in_state, IntoSystemConfigs},
+        schedule::{NextState, OnEnter, OnExit},
+        system::{Commands, Query, ResMut},
+    },
+    hierarchy::{BuildChildren, DespawnRecursiveExt},
+    render::color::Color,
+    text::TextStyle,
+    ui::{
+        node_bundles::{ButtonBundle, NodeBundle, TextBundle},
+        widget::Button,
+        AlignItems, BackgroundColor, FlexDirection, Interaction, JustifyContent, PositionType,
+        Style, Val,
+    },
+};
+
 use crate::GameState;
-use bevy::app::{App, Plugin, Update};
-use bevy::hierarchy::{BuildChildren, DespawnRecursiveExt};
-use bevy::prelude::{
-    in_state, Button, ButtonBundle, Camera2dBundle, Changed, Color, Commands, Component, Entity,
-    IntoSystemConfigs, NextState, NodeBundle, OnEnter, OnExit, Query, ResMut, TextBundle, With,
-};
-use bevy::text::TextStyle;
-use bevy::ui::{
-    AlignItems, BackgroundColor, FlexDirection, Interaction, JustifyContent, PositionType, Style,
-    Val,
-};
 
 pub struct MenuPlugin;
 

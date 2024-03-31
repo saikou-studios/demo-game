@@ -29,6 +29,7 @@ bevy = { version = "0.13.0", default-features = false, features = [
     "bevy_winit",
     "bevy_core_pipeline",
     "bevy_pbr",
+    "bevy_gizmos",
     "bevy_gltf",
     "bevy_render",
     "bevy_sprite",
@@ -39,13 +40,14 @@ bevy = { version = "0.13.0", default-features = false, features = [
     "hdr",
     "x11",
     "ktx2",
-    "bevy_gizmos",
     "tonemapping_luts",
     "default_font",
     "serialize",
+    "file_watcher",
 ] }
 bevy_ecs_tilemap = { git = "https://github.com/StarArawn/bevy_ecs_tilemap.git", branch="main", features = ["serde", "atlas"] }
 bevy_rapier2d = { version = "0.25.0", features = ["debug-render-2d"] }
+bevy_trickfilm = "0.6.0"
 
 serde = { version = "1.0.197", features = ["derive"] }
 image = { version = "0.24.0", default-features = false }

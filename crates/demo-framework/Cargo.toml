@@ -12,6 +12,7 @@ authors.workspace = true
 bevy.workspace = true
 bevy_ecs_tilemap.workspace = true
 bevy_rapier2d.workspace = true
+bevy_trickfilm.workspace = true
 serde.workspace = true
 
 bevy_asset_loader = { version = "0.20.0", features = ["2d", "progress_tracking"] }

@@ -2,9 +2,10 @@ use crate::GameState;
 use bevy::{
     app::{App, Plugin},
     asset::{AssetServer, Assets, Handle},
+    ecs::system::Resource,
     math::Vec2,
-    prelude::{Image, Resource},
-    sprite::TextureAtlasLayout,
+    prelude::TextureAtlasLayout,
+    render::texture::Image,
     text::Font,
 };
 use bevy_asset_loader::{
@@ -12,6 +13,7 @@ use bevy_asset_loader::{
     loading_state::{LoadingState, LoadingStateAppExt},
     prelude::ConfigureLoadingState,
 };
+use bevy_trickfilm::asset::AnimationClip2D;
 use iyes_progress::ProgressPlugin;
 
 pub struct LoadingPlugin;
@@ -37,12 +39,32 @@ pub struct TextureAssets {
     #[asset(path = "fonts/dungeon_font.ttf")]
     pub(crate) dungeon_font: Handle<Font>,
 
+    // player
     #[asset(texture_atlas_layout(tile_size_x = 32.0, tile_size_y = 48.0, columns = 8, rows = 3))]
     pub(crate) female_adventurer_layout: Handle<TextureAtlasLayout>,
     #[asset(image(sampler = nearest))]
     #[asset(path = "textures/npc_characters/female_2.png")]
     pub(crate) female_adventurer: Handle<Image>,
+    #[asset(
+        paths(
+            "textures/npc_characters/female_2.trickfilm#idle-down",
+            "textures/npc_characters/female_2.trickfilm#idle-left",
+            "textures/npc_characters/female_2.trickfilm#idle-right",
+            "textures/npc_characters/female_2.trickfilm#idle-top",
+            "textures/npc_characters/female_2.trickfilm#walking-down",
+            "textures/npc_characters/female_2.trickfilm#walking-left",
+            "textures/npc_characters/female_2.trickfilm#walking-right",
+            "textures/npc_characters/female_2.trickfilm#walking-top",
+            "textures/npc_characters/female_2.trickfilm#sprinting-down",
+            "textures/npc_characters/female_2.trickfilm#sprinting-left",
+            "textures/npc_characters/female_2.trickfilm#sprinting-right",
+            "textures/npc_characters/female_2.trickfilm#sprinting-top",
+        ),
+        collection(typed)
+    )]
+    pub(crate) female_adventurer_animations: Vec<Handle<AnimationClip2D>>,
 
+    // world
     #[asset(image(sampler = nearest))]
     #[asset(path = "textures/grass_land/main_autotiling.png")]
     pub(crate) grass_land: Handle<Image>,

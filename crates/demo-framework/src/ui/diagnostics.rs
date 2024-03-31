@@ -1,23 +1,47 @@
-use bevy::diagnostic::{
-    DiagnosticsStore, EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin,
+use bevy::{
+    app::{App, Plugin, Update},
+    diagnostic::{DiagnosticsStore, EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin},
+    ecs::{
+        component::Component,
+        query::{With, Without},
+        schedule::{common_conditions::in_state, IntoSystemConfigs, OnEnter},
+        system::{Commands, Query, Res},
+    },
+    hierarchy::BuildChildren,
+    input::{keyboard::KeyCode, ButtonInput},
+    render::{color::Color, view::Visibility},
+    text::{Text, TextSection, TextStyle},
+    ui::{
+        node_bundles::{NodeBundle, TextBundle},
+        BackgroundColor, PositionType, Style, UiRect, Val, ZIndex,
+    },
 };
-use bevy::hierarchy::BuildChildren;
-use bevy::input::ButtonInput;
-use bevy::prelude::{
-    Color, Commands, Component, KeyCode, NodeBundle, PositionType, Query, Res, TextBundle,
-    Visibility, With, Without, ZIndex,
-};
-use bevy::text::{Text, TextSection, TextStyle};
-use bevy::ui::{BackgroundColor, Style, UiRect, Val};
+
+use crate::GameState;
+
+pub struct DiagnosticsPlugin;
+
+impl Plugin for DiagnosticsPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(OnEnter(GameState::Playing), setup_diagnostics)
+            .add_systems(
+                Update,
+                (diagnostics_text_update, diagnostics_show_hide)
+                    .run_if(in_state(GameState::Playing)),
+            );
+    }
+}
 
 #[derive(Component)]
-pub(crate) struct DiagnosticsRoot;
-#[derive(Component)]
-pub(crate) struct FpsText;
-#[derive(Component)]
-pub(crate) struct EntitiesText;
+struct DiagnosticsRoot;
 
-pub(crate) fn setup_diagnostics(mut commands: Commands) {
+#[derive(Component)]
+struct FpsText;
+
+#[derive(Component)]
+struct EntitiesText;
+
+fn setup_diagnostics(mut commands: Commands) {
     let root = commands
         .spawn((
             DiagnosticsRoot,
@@ -94,7 +118,7 @@ pub(crate) fn setup_diagnostics(mut commands: Commands) {
         .push_children(&[text_fps, text_entities]);
 }
 
-pub(crate) fn diagnostics_text_update(
+fn diagnostics_text_update(
     diagnostics: Res<DiagnosticsStore>,
     mut fps_q: Query<&mut Text, (With<FpsText>, Without<EntitiesText>)>,
     mut entities_q: Query<&mut Text, (With<EntitiesText>, Without<FpsText>)>,
@@ -134,7 +158,7 @@ pub(crate) fn diagnostics_text_update(
     }
 }
 
-pub(crate) fn diagnostics_show_hide(
+fn diagnostics_show_hide(
     mut query: Query<&mut Visibility, With<DiagnosticsRoot>>,
     kbd: Res<ButtonInput<KeyCode>>,
 ) {

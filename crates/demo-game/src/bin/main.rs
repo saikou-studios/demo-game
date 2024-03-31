@@ -1,13 +1,20 @@
 // disable console on windows for release builds
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use bevy::app::{App, PluginGroup, Startup};
-use bevy::asset::{AssetMetaCheck, AssetPlugin};
-use bevy::prelude::{ClearColor, Color, Entity, Msaa, NonSend, Query, With};
-use bevy::window::{PrimaryWindow, Window, WindowPlugin};
-use bevy::winit::WinitWindows;
-use bevy::DefaultPlugins;
-use demo_game::GamePlugin;
+use bevy::{
+    app::{App, PluginGroup, Startup},
+    asset::{AssetMetaCheck, AssetPlugin},
+    ecs::{
+        entity::Entity,
+        query::With,
+        system::{NonSend, Query},
+    },
+    render::{camera::ClearColor, color::Color, view::Msaa},
+    window::{PrimaryWindow, Window, WindowPlugin},
+    winit::WinitWindows,
+    DefaultPlugins,
+};
+use demo_game::{version::version, GamePlugin};
 use std::io::Cursor;
 use winit::window::Icon;
 
@@ -22,7 +29,7 @@ fn main() {
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        title: format!("Demo Game {}", demo_game::version::version()),
+                        title: format!("Demo Game {}", version()),
                         ..Default::default()
                     }),
                     ..Default::default()
