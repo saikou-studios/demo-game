@@ -8,13 +8,14 @@ use bevy_rapier2d::dynamics::Velocity;
 
 use crate::GameState;
 
-use super::{input::PlayerInput, MovementState, Player};
+use super::{attack::SpawnMissile, input::PlayerInput, MovementState, Player};
 
 pub struct PlayerMovementPlugin;
 
 impl Plugin for PlayerMovementPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, player_movement.run_if(in_state(GameState::Playing)));
+        app.add_event::<SpawnMissile>()
+            .add_systems(Update, player_movement.run_if(in_state(GameState::Playing)));
     }
 }
 

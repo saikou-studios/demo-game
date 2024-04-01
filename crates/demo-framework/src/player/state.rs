@@ -3,11 +3,13 @@ use std::f32::consts::PI;
 use bevy::{
     app::{App, Plugin, PostUpdate},
     ecs::{
+        component::Component,
         schedule::{common_conditions::in_state, IntoSystemConfigs},
         system::{Query, Res},
     },
     math::Vec2,
     sprite::Sprite,
+    time::Timer,
 };
 use bevy_rapier2d::dynamics::Velocity;
 use bevy_trickfilm::animation::AnimationPlayer2D;
@@ -30,6 +32,9 @@ impl Plugin for PlayerStatePlugin {
         );
     }
 }
+
+#[derive(Component, Debug, Default)]
+pub struct CooldownTimer(pub Timer);
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub(crate) enum MovementState {
