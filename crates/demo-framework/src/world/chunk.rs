@@ -1,3 +1,4 @@
+use crate::camera::MainCamera;
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::app::{App, Plugin, PostUpdate, Update};
@@ -7,14 +8,16 @@ use bevy::hierarchy::{BuildChildren, DespawnRecursiveExt};
 use bevy::math::{IVec2, Vec3, Vec3Swizzles};
 use bevy::prelude::{
     in_state, Camera, Commands, Component, Entity, Event, EventReader, EventWriter,
-    IntoSystemConfigs, Query, Res, Transform, With,
+    IntoSystemConfigs, Query, Res, SpatialBundle, Transform, With,
 };
 use bevy::reflect::Reflect;
+use bevy::render::view::RenderLayers;
 use bevy::utils::HashSet;
-use bevy_ecs_tilemap::map::{TilemapId, TilemapTexture};
+use bevy_ecs_tilemap::map::{TilemapId, TilemapRenderSettings, TilemapTexture};
 use bevy_ecs_tilemap::prelude::{TileBundle, TilePos, TilemapType};
 use bevy_ecs_tilemap::tiles::TileStorage;
 use bevy_ecs_tilemap::TilemapBundle;
+use bevy_magic_light_2d::gi::render_layer::CAMERA_LAYER_FLOOR;
 
 use crate::world::helpers::{camera_pos_to_chunk_pos, CHUNK_SIZE, TILE_SIZE};
 use crate::world::tile::{
@@ -41,10 +44,10 @@ impl Plugin for ChunkPlugin {
     }
 }
 
-const CHUNKS_AROUND_CAMERA: IVec2 = IVec2 { x: 2, y: 2 };
+const CHUNKS_AROUND_CAMERA: IVec2 = IVec2 { x: 4, y: 4 };
 
 pub fn spawn_chunks_around_camera(
-    camera_q: Query<&Transform, With<Camera>>,
+    camera_q: Query<&Transform, With<MainCamera>>,
     chunk_q: Query<&Chunk>,
     mut spawn_chunk_event: EventWriter<SpawnChunkEvent>,
 ) {
@@ -110,12 +113,12 @@ pub fn handle_spawn_chunk_event(
                 let tile_pos = TilePos { x, y };
                 let blocks = get_tile_from_perlin_noise(chunk_pos, tile_pos, 238432);
 
-                let predominant_tile_type = determine_predominant_tile_type(&blocks);
+                // let predominant_tile_type = determine_predominant_tile_type(&blocks);
                 let texture_index = tile_type_to_texture_index(blocks[0]);
-                println!(
-                    "Predominant tile type: {:?} {:?}",
-                    predominant_tile_type, texture_index
-                );
+                // println!(
+                //     "Predominant tile type: {:?} {:?}",
+                //     predominant_tile_type, texture_index
+                // );
 
                 let tile_entity = commands
                     .spawn(TileBundle {
@@ -124,6 +127,7 @@ pub fn handle_spawn_chunk_event(
                         texture_index,
                         ..Default::default()
                     })
+                    .insert(RenderLayers::from_layers(CAMERA_LAYER_FLOOR))
                     .id();
                 commands.entity(tilemap_entity).add_child(tile_entity);
                 tile_storage.set(&tile_pos, tile_entity);
@@ -146,8 +150,13 @@ pub fn handle_spawn_chunk_event(
                 texture: TilemapTexture::Single(texture_assets.grass_land.clone()),
                 tile_size: TILE_SIZE,
                 transform,
+                render_settings: TilemapRenderSettings {
+                    render_chunk_size: CHUNK_SIZE * 2,
+                    ..Default::default()
+                },
                 ..Default::default()
             })
+            .insert(RenderLayers::from_layers(CAMERA_LAYER_FLOOR))
             .insert(Chunk { pos: chunk_pos })
             .insert(Name::new(format!("Chunk {:?}", chunk_pos)));
     }

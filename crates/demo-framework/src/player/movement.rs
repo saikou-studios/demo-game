@@ -14,8 +14,7 @@ pub struct PlayerMovementPlugin;
 
 impl Plugin for PlayerMovementPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<SpawnMissile>()
-            .add_systems(Update, player_movement.run_if(in_state(GameState::Playing)));
+        app.add_systems(Update, player_movement.run_if(in_state(GameState::Playing)));
     }
 }
 

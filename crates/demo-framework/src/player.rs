@@ -1,5 +1,5 @@
 mod attack;
-mod input;
+pub(crate) mod input;
 mod movement;
 mod state;
 
@@ -12,11 +12,13 @@ use bevy::{
     ecs::entity::Entity,
     hierarchy::BuildChildren,
     math::{Vec2, Vec3},
-    prelude::{Commands, Component, Name, OnEnter, Res, Transform},
+    prelude::{Commands, Component, Name, OnEnter, Res, SpatialBundle, Transform},
+    render::view::RenderLayers,
     sprite::{SpriteSheetBundle, TextureAtlas},
     time::{Timer, TimerMode},
     transform::TransformBundle,
 };
+use bevy_magic_light_2d::gi::{render_layer::CAMERA_LAYER_OBJECTS, types::LightOccluder2D};
 use bevy_rapier2d::{
     dynamics::{Ccd, LockedAxes, RigidBody, Velocity},
     geometry::{ActiveEvents, Collider, CollisionGroups, Group},
@@ -40,14 +42,6 @@ impl Plugin for PlayerPlugin {
                 state::PlayerStatePlugin,
                 movement::PlayerMovementPlugin,
             ));
-        // .add_systems(
-        //     Update,
-        //     (
-        //         animate_sprite_system,
-        //         (player_movement, camera_follow_player).chain(),
-        //     )
-        //         .run_if(in_state(GameState::Playing)),
-        // );
     }
 }
 
@@ -260,9 +254,7 @@ pub fn spawn_player(mut commands: Commands, my_assets: Res<TextureAssets>) {
             Collider::capsule_y(15.0, 9.0),
             ActiveEvents::COLLISION_EVENTS,
             PLAYER_COLLISION_GROUPS,
-            TransformBundle::from_transform(Transform::from_translation(Vec3::new(
-                0.0, -32.0, 0.0,
-            ))),
+            TransformBundle::from_transform(Transform::from_translation(Vec3::new(0.0, 0.0, 0.0))),
         ))
         .id();
 
@@ -271,6 +263,7 @@ pub fn spawn_player(mut commands: Commands, my_assets: Res<TextureAssets>) {
 
     commands
         .spawn((
+            Name::new("Player"),
             Player::new(collider),
             RigidBody::Dynamic,
             LockedAxes::ROTATION_LOCKED,
@@ -278,7 +271,7 @@ pub fn spawn_player(mut commands: Commands, my_assets: Res<TextureAssets>) {
             Ccd::enabled(),
             animator,
             SpriteSheetBundle {
-                transform: Transform::from_translation(PLAYER_SPAWN_POS).with_scale(PLAYER_SCALE),
+                transform: Transform::from_translation(PLAYER_SPAWN_POS),
                 texture: my_assets.female_adventurer.clone(),
                 atlas: TextureAtlas {
                     layout: my_assets.female_adventurer_layout.clone(),
@@ -286,7 +279,10 @@ pub fn spawn_player(mut commands: Commands, my_assets: Res<TextureAssets>) {
                 },
                 ..Default::default()
             },
-            Name::new("Player"),
+            RenderLayers::from_layers(CAMERA_LAYER_OBJECTS),
+            LightOccluder2D {
+                h_size: Vec2::new(2.0, 2.0),
+            },
         ))
         .push_children(&[collider]);
 }

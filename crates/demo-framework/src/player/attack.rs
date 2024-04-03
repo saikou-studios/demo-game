@@ -1,3 +1,6 @@
+use bevy::render::color::Color;
+use bevy::render::view::RenderLayers;
+use bevy::transform::TransformBundle;
 use bevy::{
     app::{App, Plugin, Update},
     ecs::{
@@ -14,6 +17,9 @@ use bevy::{
     time::Time,
     transform::components::Transform,
 };
+use bevy_magic_light_2d::gi::render_layer::CAMERA_LAYER_OBJECTS;
+use bevy_magic_light_2d::gi::types::OmniLightSource2D;
+use bevy_rapier2d::geometry::Collider;
 use bevy_trickfilm::animation::AnimationPlayer2D;
 
 use crate::{loading::TextureAssets, GameState};
@@ -70,6 +76,15 @@ pub fn spawn_missile(
                 .repeat();
 
             let direction = (event.target_pos - player_pos).normalize_or_zero();
+            let rotation = if direction == Vec2::ZERO {
+                Quat::IDENTITY
+            } else {
+                Quat::from_euler(EulerRot::XYZ, 0.0, 0.0, Vec2::X.angle_between(direction))
+            };
+            let missile_transform = Transform::from_translation(
+                player_pos.extend(1.0) + rotation.mul_vec3(Vec3::X) * Vec3::new(25.0, 50.0, 0.0),
+            )
+            .with_rotation(rotation);
 
             let missile = commands
                 .spawn((
@@ -77,17 +92,7 @@ pub fn spawn_missile(
                     Direction(direction),
                     animator,
                     SpriteSheetBundle {
-                        transform: Transform::from_translation(player_pos.extend(1.0))
-                            .with_rotation(if direction == Vec2::ZERO {
-                                Quat::IDENTITY
-                            } else {
-                                Quat::from_euler(
-                                    EulerRot::XYZ,
-                                    0.0,
-                                    0.0,
-                                    Vec2::X.angle_between(direction),
-                                )
-                            }),
+                        transform: missile_transform,
                         texture: texture_assets.ice_spell_one.clone(),
                         atlas: TextureAtlas {
                             layout: texture_assets.ice_spell_one_layout.clone(),
@@ -96,9 +101,28 @@ pub fn spawn_missile(
                         ..Default::default()
                     },
                 ))
+                .insert(RenderLayers::from_layers(CAMERA_LAYER_OBJECTS))
+                .insert(OmniLightSource2D {
+                    intensity: 0.09,
+                    color: Color::rgb_u8(89, 128, 235),
+                    falloff: Vec3::new(10.0, 10.0, 0.05),
+                    jitter_intensity: 0.2,
+                    jitter_translation: 2.0,
+                    ..Default::default()
+                })
                 .id();
 
-            commands.entity(entity).push_children(&[missile]);
+            let collider = commands
+                .spawn((
+                    Collider::cuboid(10.0, 5.0),
+                    TransformBundle::from_transform(Transform::from_translation(Vec3::new(
+                        -4.0, 0.0, 0.0,
+                    ))),
+                ))
+                .insert(RenderLayers::from_layers(CAMERA_LAYER_OBJECTS))
+                .id();
+
+            commands.entity(missile).push_children(&[collider]);
         }
     }
 }

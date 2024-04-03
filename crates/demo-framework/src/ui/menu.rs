@@ -1,6 +1,7 @@
 use bevy::{
     app::{App, AppExit, Plugin, Update},
     asset::Handle,
+    core::Name,
     core_pipeline::core_2d::Camera2dBundle,
     ecs::{
         component::Component,
@@ -179,10 +180,17 @@ fn setup_main_menu(mut commands: Commands, texture_assets: Res<TextureAssets>) {
 }
 
 #[derive(Component)]
+struct MenuCamera;
+
+#[derive(Component)]
 struct MainMenuBg;
 
 fn setup_background(mut commands: Commands, texture_assets: Res<TextureAssets>) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn((
+        Name::new("menu_camera"),
+        Camera2dBundle::default(),
+        MenuCamera,
+    ));
 
     commands
         .spawn(NodeBundle {
@@ -285,7 +293,7 @@ fn despawn_screen<T: Component>(mut commands: Commands, to_despawn: Query<Entity
     }
 }
 
-fn despawn_camera(mut commands: Commands, camera_q: Query<Entity, With<Camera>>) {
+fn despawn_camera(mut commands: Commands, camera_q: Query<Entity, With<MenuCamera>>) {
     if let Ok(entity) = camera_q.get_single() {
         commands.entity(entity).despawn_recursive();
     }

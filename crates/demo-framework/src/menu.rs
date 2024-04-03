@@ -51,8 +51,8 @@ impl Default for ButtonColors {
 struct Menu;
 
 fn setup_menu(mut commands: Commands) {
-    bevy::log::info!("Spawning Menu");
     commands.spawn(Camera2dBundle::default());
+
     commands
         .spawn((
             NodeBundle {
@@ -97,6 +97,7 @@ fn setup_menu(mut commands: Commands) {
                     ));
                 });
         });
+
     commands.spawn((
         NodeBundle {
             style: Style {

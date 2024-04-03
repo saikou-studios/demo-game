@@ -39,6 +39,10 @@ pub struct TextureAssets {
     pub(crate) background_three: Handle<Image>,
     #[asset(path = "fonts/dungeon_font.ttf")]
     pub(crate) dungeon_font: Handle<Font>,
+    #[asset(texture_atlas_layout(tile_size_x = 64.0, tile_size_y = 64.0, columns = 10, rows = 8))]
+    pub(crate) border_layout: Handle<TextureAtlasLayout>,
+    #[asset(path = "textures/ui/borders/border_all_12.png")]
+    pub(crate) border: Handle<Image>,
 
     // player
     #[asset(texture_atlas_layout(tile_size_x = 32.0, tile_size_y = 48.0, columns = 8, rows = 3))]

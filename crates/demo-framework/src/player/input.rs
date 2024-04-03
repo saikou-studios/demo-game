@@ -44,7 +44,7 @@ impl Plugin for PlayerInputPlugin {
 }
 
 #[derive(Default, Resource)]
-pub struct PlayerInput {
+pub(crate) struct PlayerInput {
     pub movement_direction: Vec2,
     pub zoom: f32,
     pub is_running: bool,

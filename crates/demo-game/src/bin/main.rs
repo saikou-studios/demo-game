@@ -9,7 +9,12 @@ use bevy::{
         query::With,
         system::{NonSend, Query},
     },
-    render::{camera::ClearColor, color::Color, view::Msaa},
+    render::{
+        camera::ClearColor,
+        color::Color,
+        texture::{ImageFilterMode, ImagePlugin, ImageSamplerDescriptor},
+        view::Msaa,
+    },
     window::{PrimaryWindow, Window, WindowPlugin},
     winit::WinitWindows,
     DefaultPlugins,
@@ -18,18 +23,22 @@ use demo_game::{version::version, GamePlugin};
 use std::io::Cursor;
 use winit::window::Icon;
 
+const SCREEN_SIZE: (f32, f32) = (1280.0, 720.0);
+
 fn main() {
     dotenvy::dotenv().expect("Failed to load .env file");
 
     App::new()
         .insert_resource(Msaa::Off)
         .insert_resource(AssetMetaCheck::Never)
-        .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
+        .insert_resource(ClearColor(Color::rgba_u8(0, 0, 0, 0)))
         .add_plugins((
             DefaultPlugins
                 .set(WindowPlugin {
                     primary_window: Some(Window {
+                        resolution: SCREEN_SIZE.into(),
                         title: format!("Demo Game {}", version()),
+                        resizable: true,
                         ..Default::default()
                     }),
                     ..Default::default()
@@ -38,6 +47,13 @@ fn main() {
                     watch_for_changes_override: Some(true),
                     file_path: "../../assets".to_string(),
                     ..Default::default()
+                })
+                .set(ImagePlugin {
+                    default_sampler: ImageSamplerDescriptor {
+                        mag_filter: ImageFilterMode::Nearest,
+                        min_filter: ImageFilterMode::Nearest,
+                        ..Default::default()
+                    },
                 }),
             GamePlugin,
         ))

@@ -9,7 +9,10 @@ use bevy::{
     },
     hierarchy::BuildChildren,
     input::{keyboard::KeyCode, ButtonInput},
-    render::{color::Color, view::Visibility},
+    render::{
+        color::Color,
+        view::{RenderLayers, Visibility},
+    },
     text::{Text, TextSection, TextStyle},
     ui::{
         node_bundles::{NodeBundle, TextBundle},
@@ -61,6 +64,7 @@ fn setup_diagnostics(mut commands: Commands) {
             },
         ))
         .id();
+
     let text_fps = commands
         .spawn((
             FpsText,
@@ -86,7 +90,9 @@ fn setup_diagnostics(mut commands: Commands) {
                 ..Default::default()
             },
         ))
+        .insert(RenderLayers::all())
         .id();
+
     let text_entities = commands
         .spawn((
             EntitiesText,
@@ -112,7 +118,9 @@ fn setup_diagnostics(mut commands: Commands) {
                 ..Default::default()
             },
         ))
+        .insert(RenderLayers::all())
         .id();
+
     commands
         .entity(root)
         .push_children(&[text_fps, text_entities]);

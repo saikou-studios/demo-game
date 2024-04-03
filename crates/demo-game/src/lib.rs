@@ -3,8 +3,10 @@ use bevy::{
     ecs::{schedule::OnEnter, system::ResMut},
 };
 use bevy_ecs_tilemap::TilemapPlugin;
+use bevy_magic_light_2d::gi::{resource::LightPassParams, BevyMagicLight2DPlugin};
 use bevy_rapier2d::plugin::{NoUserData, RapierPhysicsPlugin};
 use bevy_trickfilm::Animation2DPlugin;
+
 use demo_framework::{
     camera::CameraPlugin, loading::LoadingPlugin, player::PlayerPlugin, ui::UiPlugin,
     world::WorldPlugin, GameState,
@@ -27,6 +29,7 @@ impl Plugin for GamePlugin {
                 TilemapPlugin,
                 RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0),
                 Animation2DPlugin,
+                BevyMagicLight2DPlugin,
                 LoadingPlugin,
                 discord::DiscordPlugin::new(app_id, true),
                 UiPlugin,
